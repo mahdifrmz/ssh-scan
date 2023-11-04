@@ -4,6 +4,10 @@ const argv =
     require('yargs')
     .scriptName("ssh-scan")    
     .command('$0 <host> [from] [to] [step] [timeout]', 'Scan host to find ssh port')
+    .alias('f','from')
+    .alias('t','to')
+    .alias('o','timeout')
+    .alias('s','step')
     .help()
     .argv
 
