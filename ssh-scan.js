@@ -1,17 +1,22 @@
 #!/usr/bin/node
 const net = require('net')
-const { exit, argv } = require('process')
+const argv = 
+    require('yargs')
+    .scriptName("ssh-scan")    
+    .command('$0 <host> [from] [to] [step] [timeout]', 'Scan host to find ssh port')
+    .help()
+    .argv
 
 const MATCH_REMAIN = 0
 const MATCH_SUCCESS = 1
 const MATCH_FAILURE = -1
 
-const CONNECTION_TIMEOUT = 5000
-const SCANNING_STEP = 1024
+const CONNECTION_TIMEOUT = (argv.timeout || 5) * 1000
+const SCANNING_STEP = argv.step || 1024
 
 const portRange = {
-    from: 1,
-    to: 0xffff
+    from: argv.from || 1,
+    to: argv.to || 0xffff
 }
 
 class Matcher{
@@ -39,7 +44,7 @@ class Matcher{
     }
 }
 
-const host = argv[2] || exit(1)
+const host = argv.host
 const portMap = new Map()
 
 function clearConnection(port)
@@ -121,8 +126,8 @@ let interval = setInterval(()=>{
     {
         scanPort(iter)
     }
-    console.log(`Scanned [${iter}/65535]`)
-    if(iter == portRange.to)
+    console.log(`Scanned [${iter - 1}/${portRange.to}]`)
+    if(iter >= portRange.to)
     {
         clearInterval(interval)
     }
