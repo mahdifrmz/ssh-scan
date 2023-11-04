@@ -1,0 +1,10 @@
+{
+  "name": "ssh-scan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ssh-scan.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "mahdifrmz <faramarzpour98@gmail.com>",
+  "license": "ISC"
+}
